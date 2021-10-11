@@ -12,12 +12,11 @@ namespace WebAddressbookTests
         [Test]
         public void UserCreationTest()
         {
-            OpenHomePage();
-            Login(new AccountData("admin", "secret"));
-            InitUserCreation();
-            FillUserForm(new UserData("firstName2","lastName2"));
-            SubmitUserCreation();
-            Logout();
+            applicationManager.Contacts
+                .InitUserCreation()
+                .FillUserForm(new UserData("firstName2","lastName2"))
+                .SubmitUserCreation();
+            applicationManager.Logout.Logout();
         }
     }
 }
