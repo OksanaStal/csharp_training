@@ -13,13 +13,15 @@ namespace WebAddressbookTests
         [Test]
         public void GroupCreationTest()
         {
-            applicationManager.Navigator.GoToGroupsPage();
-            applicationManager.Groups
-                .InitGroupCreation()
-                .FillGroupForm(new GroupData("MyNewGroup2", "GroupHeader2", "MyGroupFooter2"))
-                .SubmitGroupCreation()
-                .ReturnToGroupsPage();
-            applicationManager.Logout.Logout();
+            GroupData group = new GroupData("MyNewGroup2", "GroupHeader2", "MyGroupFooter2");
+            applicationManager.Groups.Create(group);
+        }
+
+        [Test]
+        public void EmptyGroupCreationTest()
+        {
+            GroupData group = new GroupData("", "", "");
+            applicationManager.Groups.Create(group);
         }
 
     }

@@ -12,11 +12,8 @@ namespace WebAddressbookTests
         [Test]
         public void UserCreationTest()
         {
-            applicationManager.Contacts
-                .InitUserCreation()
-                .FillUserForm(new UserData("firstName2","lastName2"))
-                .SubmitUserCreation();
-            applicationManager.Logout.Logout();
+            UserData user = new UserData("firstName2", "lastName2");
+            applicationManager.Contacts.Create(user);
         }
     }
 }

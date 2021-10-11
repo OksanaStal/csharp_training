@@ -22,6 +22,7 @@ namespace WebAddressbookTests
         [TearDown]
         protected void TeardownTest()
         {
+            applicationManager.Logout.Logout();
             applicationManager.Stop();   
         }
     }

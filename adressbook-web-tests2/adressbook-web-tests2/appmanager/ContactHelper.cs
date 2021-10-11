@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.UI;
@@ -11,10 +13,54 @@ namespace WebAddressbookTests
 {
     public class ContactHelper : HelperBase
     {
-        public ContactHelper(IWebDriver driver) : base(driver)
+        private bool acceptNextAlert = true;
+
+        public ContactHelper(ApplicationManager manager) : base(manager)
         {
         }
-       
+
+        public ContactHelper RemoveAll()
+        {
+            SelectAllUsers();
+            RemoveUser();
+            return this;
+        }
+
+        public ContactHelper Remove(int p)
+        {
+            SelectUser(p);
+            RemoveUser();
+            return this;
+        }
+
+        public ContactHelper Create(UserData user)
+        {
+            InitUserCreation();
+            FillUserForm(user);
+            SubmitUserCreation();
+            return this;
+        }
+
+        public ContactHelper Modify(int p, UserData newUserData)
+        {
+            InitiateUserModificate(p);
+            FillUserForm(newUserData);
+            SubmitUserModification();
+            return this;
+        }
+
+        public ContactHelper SubmitUserModification()
+        {
+            driver.FindElement(By.Name("update")).Click();
+            return this;
+        }
+
+        public ContactHelper InitiateUserModificate(int p)
+        {
+            driver.FindElement(By.XPath("//div[@id='content']/form/table/tbody/tr[" + (p + 1) + "]//img[@title=\"Edit\"]")).Click();
+            return this;
+        }
+
         public ContactHelper InitUserCreation()
         {
             driver.FindElement(By.LinkText("add new")).Click();
@@ -47,7 +93,6 @@ namespace WebAddressbookTests
             driver.FindElement(By.Name("address")).Click();
             driver.FindElement(By.Name("address")).Clear();
             driver.FindElement(By.Name("address")).SendKeys(user.Address);
-            driver.FindElement(By.Name("theform")).Click();
             driver.FindElement(By.Name("home")).Click();
             driver.FindElement(By.Name("home")).Clear();
             driver.FindElement(By.Name("home")).SendKeys(user.HomeTelephone);
@@ -86,11 +131,9 @@ namespace WebAddressbookTests
             driver.FindElement(By.Name("ayear")).Click();
             driver.FindElement(By.Name("ayear")).Clear();
             driver.FindElement(By.Name("ayear")).SendKeys(user.AnniversaryYear);
-            driver.FindElement(By.Name("theform")).Click();
             driver.FindElement(By.Name("address2")).Click();
             driver.FindElement(By.Name("address2")).Clear();
             driver.FindElement(By.Name("address2")).SendKeys(user.SecondaryAddress);
-            driver.FindElement(By.Name("theform")).Click();
             driver.FindElement(By.Name("phone2")).Click();
             driver.FindElement(By.Name("phone2")).Clear();
             driver.FindElement(By.Name("phone2")).SendKeys(user.SecondaryHome);
@@ -104,6 +147,47 @@ namespace WebAddressbookTests
         {
             driver.FindElement(By.XPath("//div[@id='content']/form/input[21]")).Click();
             return this;
+        }
+
+        public ContactHelper RemoveUser()
+        {
+            driver.FindElement(By.XPath("//input[@type='button' and @value='Delete']")).Click();
+            Assert.IsTrue(Regex.IsMatch(CloseAlertAndGetItsText(), "^Delete . addresses[\\s\\S]$"));
+            return this;
+        }
+
+        public ContactHelper SelectUser(int p)
+        {
+            driver.FindElement(By.XPath("//div[@id='content']/form/table//tr[" + (p+1) +"]/td/input")).Click();
+            return this;
+        }
+
+        public ContactHelper SelectAllUsers()
+        {
+            driver.FindElement(By.XPath("//input[@id='MassCB']")).Click();
+            return this;
+        }
+
+        private string CloseAlertAndGetItsText()
+        {
+            try
+            {
+                IAlert alert = driver.SwitchTo().Alert();
+                string alertText = alert.Text;
+                if (acceptNextAlert)
+                {
+                    alert.Accept();
+                }
+                else
+                {
+                    alert.Dismiss();
+                }
+                return alertText;
+            }
+            finally
+            {
+                acceptNextAlert = true;
+            }
         }
     }
 }
