@@ -11,10 +11,11 @@ namespace WebAddressbookTests
 {
     public class GroupHelper : HelperBase
     {
+        private GroupData defaultGroup = new GroupData("DefaultGroupName", "DefaultHeader", "DefaultFooter"); 
         public GroupHelper(ApplicationManager manager) : base(manager)
         {
         }
-        
+
         public GroupHelper Create(GroupData group)
         {
             manager.Navigator.GoToGroupsPage();
@@ -28,6 +29,10 @@ namespace WebAddressbookTests
         public GroupHelper Modify(int p, GroupData newData)
         {
             manager.Navigator.GoToGroupsPage();
+            if (!(IsGroupExist()))
+            {
+                Create(defaultGroup);
+            }
             SelectGroup(p);
             InitGroupModification();
             FillGroupForm(newData);
@@ -39,6 +44,10 @@ namespace WebAddressbookTests
         public GroupHelper Remove(int p)
         {
             manager.Navigator.GoToGroupsPage();
+            if (!(IsGroupExist()))
+            {
+                Create(defaultGroup);
+            }
             SelectGroup(p);
             RemoveGroup();
             ReturnToGroupsPage();
@@ -48,6 +57,18 @@ namespace WebAddressbookTests
         public GroupHelper RemoveTwoGroups(int p, int s)
         {
             manager.Navigator.GoToGroupsPage();
+            if (!(IsGroupExist()))
+            {
+                Create(defaultGroup);
+                Create(defaultGroup);
+            }
+            else
+            {
+                if (!(AreTwoGroupsExist()))
+                {
+                    Create(defaultGroup);
+                }
+            }
             SelectGroup(p);
             SelectGroup(s);
             RemoveGroup();
@@ -63,15 +84,17 @@ namespace WebAddressbookTests
 
         public GroupHelper FillGroupForm(GroupData group)
         {
-            driver.FindElement(By.Name("group_name")).Click();
-            driver.FindElement(By.Name("group_name")).Clear();
-            driver.FindElement(By.Name("group_name")).SendKeys(group.Name);
-            driver.FindElement(By.Name("group_header")).Click();
-            driver.FindElement(By.Name("group_header")).Clear();
-            driver.FindElement(By.Name("group_header")).SendKeys(group.Header);
-            driver.FindElement(By.Name("group_footer")).Click();
-            driver.FindElement(By.Name("group_footer")).Clear();
-            driver.FindElement(By.Name("group_footer")).SendKeys(group.Footer);
+            Type(By.Name("group_name"), group.Name);
+            Type(By.Name("group_header"),group.Header);
+            Type(By.Name("group_footer"),group.Footer);
+            return this;
+        }
+
+        public GroupHelper FillGroupForm()
+        {
+            Type(By.Name("group_name"), "DefaultGroupName");
+            Type(By.Name("group_header"), "DefaultGroupHeader");
+            Type(By.Name("group_footer"), "DefaultGroupFooter");
             return this;
         }
 
@@ -109,6 +132,16 @@ namespace WebAddressbookTests
         {
             driver.FindElement(By.Name("edit")).Click();
             return this;
+        }
+
+        public bool IsGroupExist()
+        {
+            return IsElementPresent(By.XPath("//span[@class='group']"));
+        }
+
+        public bool AreTwoGroupsExist()
+        {
+            return IsElementPresent(By.XPath("//span[@class='group'][2]"));
         }
     }
 }

@@ -5,10 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
 
+
 namespace WebAddressbookTests
 {
     [TestFixture]
-    public class GroupModificationTests : TestBase
+    public class GroupModificationTests : AuthTestBase
     {
         [Test]
         public void GroupModificationTest()
@@ -16,5 +17,7 @@ namespace WebAddressbookTests
             GroupData newData = new GroupData("MyNewGroup5", "GroupHeader5", "MyGroupFooter5");
             applicationManager.Groups.Modify(1, newData);
         }
+
+       
     }
 }
