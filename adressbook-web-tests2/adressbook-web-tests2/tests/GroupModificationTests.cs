@@ -14,12 +14,13 @@ namespace WebAddressbookTests
         [Test]
         public void GroupModificationTest()
         {
-            GroupData group = new GroupData("Group2", "Header2", "Footer2");
+            GroupData tempGroup = new GroupData("Group2", "Header2", "Footer2");
             if (!(applicationManager.Groups.IsGroupExist()))
             {
-                applicationManager.Groups.Create(group);
+                applicationManager.Groups.Create(tempGroup);
             }
             List<GroupData> oldGroups = applicationManager.Groups.GetGroupList();
+            GroupData oldData = oldGroups[0];
             GroupData newData = new GroupData("MyNewGroup5", "GroupHeader5", "MyGroupFooter5");
             applicationManager.Groups.Modify(0, newData);
             List<GroupData> newGroups = applicationManager.Groups.GetGroupList();
@@ -27,6 +28,14 @@ namespace WebAddressbookTests
             oldGroups.Sort();
             newGroups.Sort();
             Assert.AreEqual(oldGroups, newGroups);
+
+            foreach (GroupData group in newGroups)
+            {
+                if (group.Id == oldData.Id)
+                {
+                    Assert.AreEqual(newData.Name, group.Name);
+                }
+            }
         }
 
        
