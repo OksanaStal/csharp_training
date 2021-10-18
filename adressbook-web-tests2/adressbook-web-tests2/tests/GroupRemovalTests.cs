@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using NUnit.Framework;
 
 namespace WebAddressbookTests
@@ -13,13 +14,40 @@ namespace WebAddressbookTests
         [Test]
         public void FirstGroupRemovalTest()
         {
-            applicationManager.Groups.Remove(1);
+            if (!(applicationManager.Groups.IsGroupExist()))
+            {
+                GroupData group = new GroupData("MyNewGroup2", "GroupHeader2", "MyGroupFooter2");
+                applicationManager.Groups.Create(group);
+            }
+            List<GroupData> oldGroups = applicationManager.Groups.GetGroupList();
+            applicationManager.Groups.Remove(0);
+            List<GroupData> newGroups = applicationManager.Groups.GetGroupList();
+            oldGroups.RemoveAt(0);
+            Assert.AreEqual(oldGroups, newGroups);
         }
 
         [Test]
         public void TwoGroupsRemovalTest()
         {
-            applicationManager.Groups.RemoveTwoGroups(1,2);
+            GroupData group = new GroupData("MyNewGroup2", "GroupHeader2", "MyGroupFooter2");
+
+            if (!(applicationManager.Groups.IsGroupExist()))
+            {
+                applicationManager.Groups.Create(group);
+                applicationManager.Groups.Create(group);
+            }
+            else
+            {
+                if (!(applicationManager.Groups.AreTwoGroupsExist()))
+                {
+                    applicationManager.Groups.Create(group);
+                }
+            }
+            List<GroupData> oldGroups = applicationManager.Groups.GetGroupList();
+            applicationManager.Groups.RemoveTwoGroups(0,1);
+            List<GroupData> newGroups = applicationManager.Groups.GetGroupList();
+            oldGroups.RemoveRange(0, 2);
+            Assert.AreEqual(oldGroups, newGroups);
         }
 
 

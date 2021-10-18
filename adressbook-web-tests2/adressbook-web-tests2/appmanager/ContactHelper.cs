@@ -16,6 +16,23 @@ namespace WebAddressbookTests
         private bool acceptNextAlert = true;
         private UserData defaultUser = new UserData("defaultFirstName", "defaultLastName");
 
+        public List<UserData> GetUserList()
+        {
+            List<UserData> contacts = new List<UserData>();
+            manager.Navigator.GoToHomePageViaLink();
+            ICollection<IWebElement> elements = driver.FindElements(By.XPath("//tr[@name='entry']"));
+            if (elements.Count > 0)
+            {
+                foreach (IWebElement element in elements)
+                {
+                    IList<IWebElement> cells = element.FindElements(By.TagName("td"));
+                    UserData user = new UserData(cells.ElementAt(2).Text, cells.ElementAt(1).Text);
+                    contacts.Add(user);
+                }
+            }
+            return contacts;
+        }
+
         public ContactHelper(ApplicationManager manager) : base(manager)
         {
         }
@@ -36,12 +53,9 @@ namespace WebAddressbookTests
         public ContactHelper Remove(int p)
         {
             manager.Navigator.GoToHomePageViaLink();
-            if (NoContacts())
-            {
-                Create(defaultUser);
-            }
             SelectUser(p);
             RemoveUser();
+            driver.FindElement(By.CssSelector("div.msgbox"));
             manager.Navigator.GoToHomePageViaLink();
             return this;
         }
@@ -59,10 +73,6 @@ namespace WebAddressbookTests
         public ContactHelper Modify(int p, UserData newUserData)
         {
             manager.Navigator.GoToHomePageViaLink();
-            if (NoContacts())
-            {
-                Create(defaultUser);
-            }
             InitiateUserModificate(p);
             FillUserForm(newUserData);
             SubmitUserModification();
@@ -78,7 +88,7 @@ namespace WebAddressbookTests
 
         public ContactHelper InitiateUserModificate(int p)
         {
-            driver.FindElement(By.XPath("//div[@id='content']/form/table/tbody/tr[" + (p + 1) + "]//img[@title=\"Edit\"]")).Click();
+            driver.FindElement(By.XPath("//div[@id='content']/form/table/tbody/tr[" + (p + 2) + "]//img[@title=\"Edit\"]")).Click();
             return this;
         }
 
@@ -133,7 +143,7 @@ namespace WebAddressbookTests
 
         public ContactHelper SelectUser(int p)
         {
-            driver.FindElement(By.XPath("//div[@id='content']/form/table//tr[" + (p+1) +"]/td/input")).Click();
+            driver.FindElement(By.XPath("//div[@id='content']/form/table//tr[" + (p+2) +"]/td/input")).Click();
             return this;
         }
 
@@ -167,6 +177,7 @@ namespace WebAddressbookTests
 
         public bool NoContacts()
         {
+            manager.Navigator.GoToHomePageViaLink();
             return IsElementPresent(By.XPath("//strong[contains(text(),'Number of results: ')]/span[@id=\"search_count\"][.='0']"));
         } 
     }

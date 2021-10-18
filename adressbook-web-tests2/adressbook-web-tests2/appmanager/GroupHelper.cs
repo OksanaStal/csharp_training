@@ -26,13 +26,23 @@ namespace WebAddressbookTests
             return this;
         }
 
+        public List<GroupData> GetGroupList()
+        {
+            List<GroupData> groups = new List<GroupData>();
+            manager.Navigator.GoToGroupsPage();
+            ICollection<IWebElement> elements = driver.FindElements(By.CssSelector("span.group"));
+            foreach (IWebElement element in elements)
+            {
+                GroupData group = new GroupData(element.Text);
+                groups.Add(group);
+            }
+            return groups;
+
+        }
+
         public GroupHelper Modify(int p, GroupData newData)
         {
             manager.Navigator.GoToGroupsPage();
-            if (!(IsGroupExist()))
-            {
-                Create(defaultGroup);
-            }
             SelectGroup(p);
             InitGroupModification();
             FillGroupForm(newData);
@@ -44,10 +54,6 @@ namespace WebAddressbookTests
         public GroupHelper Remove(int p)
         {
             manager.Navigator.GoToGroupsPage();
-            if (!(IsGroupExist()))
-            {
-                Create(defaultGroup);
-            }
             SelectGroup(p);
             RemoveGroup();
             ReturnToGroupsPage();
@@ -57,18 +63,6 @@ namespace WebAddressbookTests
         public GroupHelper RemoveTwoGroups(int p, int s)
         {
             manager.Navigator.GoToGroupsPage();
-            if (!(IsGroupExist()))
-            {
-                Create(defaultGroup);
-                Create(defaultGroup);
-            }
-            else
-            {
-                if (!(AreTwoGroupsExist()))
-                {
-                    Create(defaultGroup);
-                }
-            }
             SelectGroup(p);
             SelectGroup(s);
             RemoveGroup();
@@ -118,7 +112,7 @@ namespace WebAddressbookTests
 
         private GroupHelper SelectGroup(int p)
         {
-            driver.FindElement(By.XPath("//div[@id='content']/form/span[" + p + "]/input")).Click();
+            driver.FindElement(By.XPath("//div[@id='content']/form/span[" + (p + 1) + "]/input")).Click();
             return this;
         }
 
@@ -136,11 +130,13 @@ namespace WebAddressbookTests
 
         public bool IsGroupExist()
         {
+            manager.Navigator.GoToGroupsPage();
             return IsElementPresent(By.XPath("//span[@class='group']"));
         }
 
         public bool AreTwoGroupsExist()
         {
+            manager.Navigator.GoToGroupsPage();
             return IsElementPresent(By.XPath("//span[@class='group'][2]"));
         }
     }
