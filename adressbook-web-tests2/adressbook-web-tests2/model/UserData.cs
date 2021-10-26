@@ -11,7 +11,39 @@ namespace WebAddressbookTests
     {
         private string allPhones;
         private string allEmails;
+        private string allInfoFormattedForDetailsPage;
+        StringBuilder sb;
+        Boolean flagDataIsPresent;
+        Boolean flagDataInLineIsPresent;
+        Boolean noBirthdayAnniversaryDay;
 
+        public UserData()
+        {
+            FirstName = "defaultFirstName";
+            LastName = "defaultLastName";
+            MiddleName = "defaultMiddleName";
+            NickName = "defaultNickName";
+            Title = "defaultTitle";
+            Company = "defaultCompany";
+            Address = "defaultAddress";
+            HomeTelephone = "defaultHomeTelephone";
+            MobileTelephone = "defaultMobileTelephone";
+            WorkTelephone = "defaultWorkTelephone";
+            FaxTelephone = "defaultFaxTelephone";
+            Email = "defaultEmail";
+            Email2 = "defaultEmail2";
+            Email3 = "defaultEmail3";
+            Homepage = "defaultHomePage";
+            BirthdayDay = "1";
+            BirthdayMonth = "January";
+            BirthdayYear = "1980";
+            AnniversaryDay = "1";
+            AnniversaryMonth = "January";
+            AnniversaryYear = "2000";
+            SecondaryAddress = "defaultSecondaryAddress";
+            SecondaryHome = "defaultSecondaryHome";
+            Notes = "defaultNotes";
+        }
         public UserData(string firstName, string lastName)
         {
             FirstName = firstName;
@@ -167,6 +199,158 @@ namespace WebAddressbookTests
             else
             {
                 return email + "\r\n";
+            }
+        }
+
+        public string AllInfoFormattedForDetalesPage
+        {
+            get
+            {
+                if (allInfoFormattedForDetailsPage != null)
+                {
+                    return allInfoFormattedForDetailsPage;
+                }
+                else
+                {
+                    flagDataIsPresent = false;
+                    flagDataInLineIsPresent = false;
+                    noBirthdayAnniversaryDay = true;
+                    sb = new StringBuilder("");
+                    AddRecord(this.FirstName);
+                    AddRecord(this.MiddleName);
+                    AddRecord(this.LastName);
+                    FinishLineWithFIO();
+                    AddRecordWithNewLine(this.NickName);
+                    AddRecordWithNewLine(this.Title);
+                    AddRecordWithNewLine(this.Company);
+                    AddRecordWithNewLine(this.Address);
+                    AddNewLine();
+                    AddRecordWithNewLine("H: ", this.HomeTelephone);
+                    AddRecordWithNewLine("M: ", this.MobileTelephone);
+                    AddRecordWithNewLine("W: ", this.WorkTelephone);
+                    AddRecordWithNewLine("F: ", this.FaxTelephone);
+                    AddNewLine();
+                    AddRecordWithNewLine(this.Email);
+                    AddRecordWithNewLine(this.Email2);
+                    AddRecordWithNewLine(this.Email3);
+                    if (this.Homepage != "")
+                    {
+                        AddRecordWithNewLine("Homepage:");
+                    }
+                    AddRecordWithNewLine(this.Homepage);
+                    AddNewLine();
+                    AddRecordWithNewLine("Birthday ", FormatDateWithAge(this.BirthdayDay, this.BirthdayMonth, this.BirthdayYear));
+                    AddRecordWithNewLine("Anniversary ", FormatDateWithAge(this.AnniversaryDay, this.AnniversaryMonth, this.AnniversaryYear));
+                    AddNewLine();
+                    if (noBirthdayAnniversaryDay)
+                    {
+                        sb.Append("\r\n");
+                        flagDataIsPresent = false;
+                    }
+                    AddRecordWithNewLine(this.SecondaryAddress);
+                    AddNewLine();
+                    AddRecordWithNewLine("P: ", this.SecondaryHome);
+                    AddNewLine();
+                    sb.Append(this.Notes);
+                    return sb.ToString().Trim();
+                }
+            }
+            set
+            {
+                allInfoFormattedForDetailsPage = value;
+            }
+        }
+
+        private string FormatDateWithAge(string day, string month, string year)
+        {
+            string result = "";
+            
+            if (day != "0")
+            {
+                result = day + ". ";
+            }
+            if (month != "-")
+            {
+                result = result + month + " ";
+            }
+            if (year != "")
+            {
+                result = result + year + " (" + CalculateAge(day, month, year) + ")";
+            }
+            if (result != "")
+            {
+                noBirthdayAnniversaryDay = false;
+            }
+            return result.Trim();
+        }
+
+        private string CalculateAge(string day, string month, string year)
+        {
+            if (day == "0")
+            {
+                day = "1";
+            }
+            if (month == "-")
+            {
+                month = "January";
+            }
+            DateTime birth = DateTime.Parse(day + " " + month + " " + year);
+            DateTime today = DateTime.Today;
+            int age = today.Year - birth.Year;
+            if (today.Month < birth.Month ||
+                ((today.Month == birth.Month) && (today.Day < birth.Day)))
+            {
+                age--;  
+            }
+
+            return age.ToString(); 
+        }
+
+        private void AddRecord(string str)
+        {
+            if (str != "")
+            {
+                if (flagDataInLineIsPresent)
+                {
+                    sb.Append(" ");
+                }
+                sb.Append(str);
+                flagDataInLineIsPresent = true;
+                flagDataIsPresent = true;
+            }
+        }
+        private void AddRecordWithNewLine(string str)
+        {
+            AddRecordWithNewLine("", str);
+        }
+
+        private void AddRecordWithNewLine(string prefix, string str)
+        {
+            if (str != "")
+            {
+                sb.Append(prefix);
+                sb.Append(str);
+                sb.Append("\r\n");
+                flagDataInLineIsPresent = false;
+                flagDataIsPresent = true;
+            }
+        }
+
+        private void FinishLineWithFIO()
+        {
+            if (flagDataIsPresent)
+            {
+                sb.Append("\r\n");
+                flagDataInLineIsPresent = false;
+            }
+        }
+        private void AddNewLine()
+        {
+            if (flagDataIsPresent)
+            {
+                sb.Append("\r\n");
+                flagDataIsPresent = false;
+                flagDataInLineIsPresent = false;
             }
         }
 

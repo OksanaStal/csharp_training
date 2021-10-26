@@ -48,6 +48,22 @@ namespace WebAddressbookTests
             string email3 = driver.FindElement(By.Name("email3")).GetAttribute("value");
             string secondaryPhone = driver.FindElement(By.Name("phone2")).GetAttribute("value");
 
+            string middleName = driver.FindElement(By.Name("middlename")).GetAttribute("value");
+            string nickName = driver.FindElement(By.Name("nickname")).GetAttribute("value");
+            string company = driver.FindElement(By.Name("company")).GetAttribute("value");
+            string title = driver.FindElement(By.Name("title")).GetAttribute("value");
+            string fax = driver.FindElement(By.Name("fax")).GetAttribute("value");
+            string homepage = driver.FindElement(By.Name("homepage")).GetAttribute("value");
+            string birthDay = driver.FindElement(By.Name("bday")).GetAttribute("value");
+            string birthMonth = FirstLetterToUpper(driver.FindElement(By.Name("bmonth")).GetAttribute("value"));
+            string birthYear = driver.FindElement(By.Name("byear")).GetAttribute("value");
+            string aDay = driver.FindElement(By.Name("aday")).GetAttribute("value");
+            string aMonth = FirstLetterToUpper(driver.FindElement(By.Name("amonth")).GetAttribute("value"));
+            string aYear = driver.FindElement(By.Name("ayear")).GetAttribute("value");
+            string secondaryAddress = driver.FindElement(By.Name("address2")).GetAttribute("value");
+            string notes = driver.FindElement(By.Name("notes")).GetAttribute("value");
+
+
             return new UserData(firstName, lastName)
             {
                 Address = address,
@@ -58,7 +74,49 @@ namespace WebAddressbookTests
                 Email2 = email2,
                 Email3 = email3,
                 SecondaryHome = secondaryPhone,
+                MiddleName = middleName,
+                NickName = nickName,
+                Company = company,
+                Title = title,
+                FaxTelephone = fax,
+                Homepage = homepage,
+                BirthdayDay = birthDay,
+                BirthdayMonth = birthMonth,
+                BirthdayYear = birthYear,
+                AnniversaryDay = aDay,
+                AnniversaryMonth = aMonth,
+                AnniversaryYear = aYear,
+                SecondaryAddress = secondaryAddress,
+                Notes = notes,
             };
+        }
+
+        private string FirstLetterToUpper(string str)
+        {
+            if (str == null)
+                return null;
+
+            if (str.Length > 1)
+                return char.ToUpper(str[0]) + str.Substring(1);
+
+            return str.ToUpper(); ;
+        }
+
+        internal UserData GetContactInformationFromDetailsPage(int index)
+        {
+            manager.Navigator.GoToHomePageViaLink();
+            OpenUserDetailsPage(index);
+            string fullInfoAboutUser = driver.FindElement(By.Id("content")).Text;
+            return new UserData()
+            {
+                AllInfoFormattedForDetalesPage = fullInfoAboutUser,
+            };    
+        }
+
+        private ContactHelper OpenUserDetailsPage(int index)
+        {
+            driver.FindElement(By.XPath("//div[@id='content']/form/table/tbody/tr[" + (index + 2) + "]//img[@title=\"Details\"]")).Click();
+            return this;
         }
 
         private UserData defaultUser = new UserData("defaultFirstName", "defaultLastName");
