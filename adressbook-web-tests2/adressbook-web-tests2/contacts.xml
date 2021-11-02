@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfUserData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <UserData>
+    <FirstName>DN</FirstName>
+    <LastName>J-OR\"</LastName>
+    <MiddleName>defaultMiddleName</MiddleName>
+    <NickName>defaultNickName</NickName>
+    <Title>defaultTitle</Title>
+    <Company>defaultCompany</Company>
+    <Address>defaultAddress</Address>
+    <HomeTelephone>defaultHomeTelephone</HomeTelephone>
+    <MobileTelephone>defaultMobileTelephone</MobileTelephone>
+    <WorkTelephone>defaultWorkTelephone</WorkTelephone>
+    <FaxTelephone>defaultFaxTelephone</FaxTelephone>
+    <AllPhones>defaultHomeTelephone
+defaultMobileTelephone
+defaultWorkTelephone
+defaultSecondaryHome</AllPhones>
+    <Email>defaultEmail</Email>
+    <Email2>defaultEmail2</Email2>
+    <Email3>defaultEmail3</Email3>
+    <AllEmails>defaultEmail
+defaultEmail2
+defaultEmail3</AllEmails>
+    <AllInfoFormattedForDetalesPage>DN defaultMiddleName J-OR\"
+defaultNickName
+defaultTitle
+defaultCompany
+defaultAddress
+
+H: defaultHomeTelephone
+M: defaultMobileTelephone
+W: defaultWorkTelephone
+F: defaultFaxTelephone
+
+defaultEmail
+defaultEmail2
+defaultEmail3
+Homepage:
+defaultHomePage
+
+Birthday 1. January 1980 (41)
+Anniversary 1. January 2000 (21)
+
+defaultSecondaryAddress
+
+P: defaultSecondaryHome
+
+defaultNotes</AllInfoFormattedForDetalesPage>
+    <Homepage>defaultHomePage</Homepage>
+    <BirthdayDay>1</BirthdayDay>
+    <BirthdayMonth>January</BirthdayMonth>
+    <BirthdayYear>1980</BirthdayYear>
+    <AnniversaryDay>1</AnniversaryDay>
+    <AnniversaryMonth>January</AnniversaryMonth>
+    <AnniversaryYear>2000</AnniversaryYear>
+    <SecondaryAddress>defaultSecondaryAddress</SecondaryAddress>
+    <SecondaryHome>defaultSecondaryHome</SecondaryHome>
+    <Notes>defaultNotes</Notes>
+  </UserData>
+  <UserData>
+    <FirstName>ZEX?E&amp;Z*</FirstName>
+    <LastName>SC%!I</LastName>
+    <MiddleName>defaultMiddleName</MiddleName>
+    <NickName>defaultNickName</NickName>
+    <Title>defaultTitle</Title>
+    <Company>defaultCompany</Company>
+    <Address>defaultAddress</Address>
+    <HomeTelephone>defaultHomeTelephone</HomeTelephone>
+    <MobileTelephone>defaultMobileTelephone</MobileTelephone>
+    <WorkTelephone>defaultWorkTelephone</WorkTelephone>
+    <FaxTelephone>defaultFaxTelephone</FaxTelephone>
+    <AllPhones>defaultHomeTelephone
+defaultMobileTelephone
+defaultWorkTelephone
+defaultSecondaryHome</AllPhones>
+    <Email>defaultEmail</Email>
+    <Email2>defaultEmail2</Email2>
+    <Email3>defaultEmail3</Email3>
+    <AllEmails>defaultEmail
+defaultEmail2
+defaultEmail3</AllEmails>
+    <AllInfoFormattedForDetalesPage>ZEX?E&amp;Z* defaultMiddleName SC%!I
+defaultNickName
+defaultTitle
+defaultCompany
+defaultAddress
+
+H: defaultHomeTelephone
+M: defaultMobileTelephone
+W: defaultWorkTelephone
+F: defaultFaxTelephone
+
+defaultEmail
+defaultEmail2
+defaultEmail3
+Homepage:
+defaultHomePage
+
+Birthday 1. January 1980 (41)
+Anniversary 1. January 2000 (21)
+
+defaultSecondaryAddress
+
+P: defaultSecondaryHome
+
+defaultNotes</AllInfoFormattedForDetalesPage>
+    <Homepage>defaultHomePage</Homepage>
+    <BirthdayDay>1</BirthdayDay>
+    <BirthdayMonth>January</BirthdayMonth>
+    <BirthdayYear>1980</BirthdayYear>
+    <AnniversaryDay>1</AnniversaryDay>
+    <AnniversaryMonth>January</AnniversaryMonth>
+    <AnniversaryYear>2000</AnniversaryYear>
+    <SecondaryAddress>defaultSecondaryAddress</SecondaryAddress>
+    <SecondaryHome>defaultSecondaryHome</SecondaryHome>
+    <Notes>defaultNotes</Notes>
+  </UserData>
+</ArrayOfUserData>
