@@ -8,19 +8,21 @@ using NUnit.Framework;
 namespace WebAddressbookTests
 {
     [TestFixture]
-    class UserRemovalTests : AuthTestBase
+    class UserRemovalTests : UserTestBase
     {
         [Test]
         public void UserRemovalTest()
         {
-            if (applicationManager.Contacts.NoContacts())
+            List<UserData> oldContacts = UserData.GetAll();
+            if (oldContacts.Count == 0)
             {
                 UserData user = new UserData("firstName1", "lastName1");
                 applicationManager.Contacts.Create(user);
+                oldContacts = UserData.GetAll();
             }
-            List<UserData> oldContacts = applicationManager.Contacts.GetUserList();
-            applicationManager.Contacts.Remove(0);
-            List<UserData> newContacts = applicationManager.Contacts.GetUserList();
+            UserData userToRemove = oldContacts[0];
+            applicationManager.Contacts.Remove(userToRemove);
+            List<UserData> newContacts = UserData.GetAll();
             oldContacts.RemoveAt(0);
             oldContacts.Sort();
             newContacts.Sort();
@@ -30,13 +32,13 @@ namespace WebAddressbookTests
         [Test]
         public void AllUsersRemovalTest()
         {
-            if (applicationManager.Contacts.NoContacts())
+            if (UserData.GetAll().Count == 0)
             {
                 UserData user = new UserData("firstName1", "lastName1");
                 applicationManager.Contacts.Create(user);
             }
             applicationManager.Contacts.RemoveAll();
-            List<UserData> newContacts = applicationManager.Contacts.GetUserList();
+            List<UserData> newContacts = UserData.GetAll();
             Assert.IsEmpty(newContacts);
         }
     }

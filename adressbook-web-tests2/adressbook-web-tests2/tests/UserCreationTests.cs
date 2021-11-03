@@ -12,7 +12,7 @@ using System.Xml.Serialization;
 namespace WebAddressbookTests
 {
     [TestFixture]
-    public class UserCreationTests : AuthTestBase
+    public class UserCreationTests : UserTestBase
     {
         public static IEnumerable<UserData> RandomUserDataProvider()
         {
@@ -49,9 +49,9 @@ namespace WebAddressbookTests
         [Test, TestCaseSource("UserDataFromCsvFile")]
         public void UserCreationTest(UserData user)
         {
-            List<UserData> oldContacts = applicationManager.Contacts.GetUserList();
+            List<UserData> oldContacts = UserData.GetAll();
             applicationManager.Contacts.Create(user);
-            List<UserData> newContacts = applicationManager.Contacts.GetUserList();
+            List<UserData> newContacts = UserData.GetAll();
             oldContacts.Add(user);
             oldContacts.Sort();
             newContacts.Sort();

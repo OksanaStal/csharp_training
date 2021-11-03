@@ -168,7 +168,16 @@ namespace WebAddressbookTests
             manager.Navigator.GoToHomePageViaLink();
             return this;
         }
-        
+
+        public ContactHelper Remove(UserData userToDelete)
+        {
+            manager.Navigator.GoToHomePageViaLink();
+            SelectUser(userToDelete.Id);
+            RemoveUser();
+            manager.Navigator.GoToHomePageViaLink();
+            return this;
+        }
+
         public ContactHelper Create(UserData user)
         {
             manager.Navigator.GoToHomePageViaLink();
@@ -189,6 +198,16 @@ namespace WebAddressbookTests
             return this;
         }
 
+        public ContactHelper Modify(UserData userToModify, UserData newUserData)
+        {
+            manager.Navigator.GoToHomePageViaLink();
+            InitiateUserModificate(userToModify.Id);
+            FillUserForm(newUserData);
+            SubmitUserModification();
+            manager.Navigator.GoToHomePageViaLink();
+            return this;
+        }
+
         public ContactHelper SubmitUserModification()
         {
             driver.FindElement(By.Name("update")).Click();
@@ -199,6 +218,13 @@ namespace WebAddressbookTests
         public ContactHelper InitiateUserModificate(int p)
         {
             driver.FindElement(By.XPath("//div[@id='content']/form/table/tbody/tr[" + (p + 2) + "]//img[@title=\"Edit\"]")).Click();
+            return this;
+        }
+
+        public ContactHelper InitiateUserModificate(string id)
+        {
+            //driver.FindElement(By.XPath("//div[@id='content']/form/table/tbody/tr[" + (p + 2) + "]//img[@title=\"Edit\"]")).Click();
+            driver.FindElement(By.XPath("//div[@id='content']/form/table/tbody/tr/td/input[@type='checkbox' and @id='" + id + "']/../..//img[@title='Edit']")).Click();
             return this;
         }
 
@@ -257,6 +283,12 @@ namespace WebAddressbookTests
         public ContactHelper SelectUser(int p)
         {
             driver.FindElement(By.XPath("//div[@id='content']/form/table//tr[" + (p+2) +"]/td/input")).Click();
+            return this;
+        }
+
+        public ContactHelper SelectUser(string id)
+        {
+            driver.FindElement(By.XPath("//div[@id='content']/form/table//tr/td/input[@id=" + id + " and @type='checkbox']")).Click();
             return this;
         }
 

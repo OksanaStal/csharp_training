@@ -4,6 +4,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
 using NUnit.Framework;
@@ -11,10 +12,11 @@ using Newtonsoft.Json;
 using Excel = Microsoft.Office.Interop.Excel;
 
 
+
 namespace WebAddressbookTests
 {
     [TestFixture]
-    public class GroupCreationTests : AuthTestBase
+    public class GroupCreationTests : GroupTestBase
     {
         public static IEnumerable<GroupData> RandomGroupDataProvider()
         {
@@ -51,14 +53,16 @@ namespace WebAddressbookTests
         [Test, TestCaseSource("GroupDataFromJsonFile")]
         public void GroupCreationTest(GroupData group)
         {
-            List<GroupData> oldGroups = applicationManager.Groups.GetGroupList();
+            List<GroupData> oldGroups = GroupData.GetAll();
             applicationManager.Groups.Create(group);
-            List<GroupData> newGroups = applicationManager.Groups.GetGroupList();
+            List<GroupData> newGroups = GroupData.GetAll();
             oldGroups.Add(group);
             oldGroups.Sort();
             newGroups.Sort();
             Assert.AreEqual(oldGroups, newGroups);
         }
+
+        
     }
 }
 

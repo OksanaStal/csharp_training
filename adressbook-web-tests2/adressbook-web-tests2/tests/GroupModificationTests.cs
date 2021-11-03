@@ -9,21 +9,22 @@ using NUnit.Framework;
 namespace WebAddressbookTests
 {
     [TestFixture]
-    public class GroupModificationTests : AuthTestBase
+    public class GroupModificationTests : GroupTestBase
     {
         [Test]
         public void GroupModificationTest()
         {
             GroupData tempGroup = new GroupData("Group2", "Header2", "Footer2");
-            if (!(applicationManager.Groups.IsGroupExist()))
+            List<GroupData> oldGroups = GroupData.GetAll();
+            if (oldGroups.Count == 0)
             {
                 applicationManager.Groups.Create(tempGroup);
+                oldGroups = GroupData.GetAll();
             }
-            List<GroupData> oldGroups = applicationManager.Groups.GetGroupList();
             GroupData oldData = oldGroups[0];
             GroupData newData = new GroupData("MyNewGroup5", "GroupHeader5", "MyGroupFooter5");
-            applicationManager.Groups.Modify(0, newData);
-            List<GroupData> newGroups = applicationManager.Groups.GetGroupList();
+            applicationManager.Groups.Modify(oldData, newData);
+            List<GroupData> newGroups = GroupData.GetAll();
             oldGroups[0].Name = newData.Name;
             oldGroups.Sort();
             newGroups.Sort();

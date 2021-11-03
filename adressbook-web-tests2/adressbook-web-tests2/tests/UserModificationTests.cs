@@ -8,22 +8,24 @@ using NUnit.Framework;
 namespace WebAddressbookTests
 {
     [TestFixture]
-    class UserModificationTests : AuthTestBase
+    class UserModificationTests : UserTestBase
     {
         [Test]
         public void UserModificationTest()
         {
-            if (applicationManager.Contacts.NoContacts())
+            UserData newUserData = new UserData("NewfirstName2", "NewlastName2");
+            List<UserData> oldContacts = UserData.GetAll();
+            if (oldContacts.Count() == 0)
             {
                 UserData user = new UserData("firstName1", "lastName1");
                 applicationManager.Contacts.Create(user);
+                oldContacts = UserData.GetAll();
             }
-            UserData newUserData = new UserData("NewfirstName2", "NewlastName2");
-            List<UserData> oldContacts = applicationManager.Contacts.GetUserList();
-            applicationManager.Contacts.Modify(0, newUserData);
-            List<UserData> newContacts = applicationManager.Contacts.GetUserList();
-            oldContacts[0].FirstName = newUserData.FirstName;
-            oldContacts[0].LastName = newUserData.LastName;
+            UserData userToModify = oldContacts[0];
+            applicationManager.Contacts.Modify(userToModify, newUserData);
+            List<UserData> newContacts = UserData.GetAll();
+            userToModify.FirstName = newUserData.FirstName;
+            userToModify.LastName = newUserData.LastName;
             oldContacts.Sort();
             newContacts.Sort();
             Assert.AreEqual(oldContacts, newContacts);
